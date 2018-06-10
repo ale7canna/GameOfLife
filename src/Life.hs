@@ -6,12 +6,40 @@ data Cell = Cell Int Int
 class CellCapable a where
   cell :: a -> Cell
 
+class LifeCycle a where
+  evolve :: a -> [a] -> a
+
 data Life = Alive Cell | Dead Cell
   deriving (Show, Eq)
 
 instance CellCapable Life where
   cell (Alive c) = c
   cell (Dead c)  = c
+
+instance LifeCycle Life where
+  evolve x@(Alive c) world
+    | alone x world     = Dead (c)
+    | overPop x world   = Dead (c)
+    | otherwise         = x
+  evolve x@(Dead c) world
+    | canBorn x world   = Alive (c)
+    | otherwise         = x
+
+alone :: Life -> [Life] -> Bool
+alone = applyCondition (< 2)
+
+overPop :: Life -> [Life] -> Bool
+overPop = applyCondition (> 3)
+
+canBorn :: Life -> [Life] -> Bool
+canBorn = applyCondition (== 3)
+
+applyCondition :: (Int -> Bool) -> Life -> [Life] -> Bool
+applyCondition cond l oth = (cond . length . filter isAlive) (neighbours l oth)
+
+isAlive :: Life -> Bool
+isAlive (Alive _) = True
+isAlive _ = False
 
 createLife :: Cell -> Life
 createLife c = Alive c
