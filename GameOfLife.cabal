@@ -2,7 +2,7 @@
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: feaf8c668a5c657adf1fad0fe4dfce98feef32f4e823fc0ab01cac731f34287b
+-- hash: 110b5afeb1a4242096150d92919ca50839f1878f64e787f05733e8669f923450
 
 name:           GameOfLife
 version:        0.1.0.0
@@ -13,12 +13,9 @@ author:         Author name here
 maintainer:     example@example.com
 copyright:      2018 Author name here
 license:        BSD3
-license-file:   LICENSE
 build-type:     Simple
 cabal-version:  >= 1.10
 extra-source-files:
-    ChangeLog.md
-    README.md
 
 source-repository head
   type: git
