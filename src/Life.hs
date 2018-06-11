@@ -41,11 +41,11 @@ isAlive :: Life -> Bool
 isAlive (Alive _) = True
 isAlive _ = False
 
-createLife :: Cell -> Life
-createLife c = Alive c
+life :: Int -> Int -> Life
+life r c = Alive (Cell r c)
 
-createDead :: Cell -> Life
-createDead c = Dead c
+dead :: Int -> Int -> Life
+dead r c = Dead (Cell r c)
 
 neighbours :: Life -> [Life] -> [Life]
 neighbours _ [] = []

@@ -25,6 +25,7 @@ library
   exposed-modules:
       GameOfLife
       Life
+      Input
   other-modules:
       Paths_GameOfLife
   hs-source-dirs:

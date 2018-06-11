@@ -10,45 +10,45 @@ spec :: Spec
 spec = do
   describe "life handling" $ do
     it "should create life" $ do
-      createLife (Cell 10 10) `shouldBe` Alive (Cell 10 10)
+      life 10 10 `shouldBe` Alive (Cell 10 10)
 
     it "should create dead" $ do
-      createDead (Cell 2 2) `shouldBe` Dead (Cell 2 2)
+      dead 2 2 `shouldBe` Dead (Cell 2 2)
 
     it "should not have neighbours" $ do
-      neighbours (createLife (Cell 10 10)) [] `shouldBe` []
+      neighbours (life 10 10) [] `shouldBe` []
 
     it "should have all neighbours" $ do
-      let mates = createLife (Cell 1 1) : createLife (Cell 1 0) : createLife (Cell 0 1) : [] in
-        neighbours (createLife (Cell 0 0)) mates `shouldBe` mates
+      let mates = life 1 1 : life 1 0 : life 0 1 : [] in
+        neighbours (life 0 0) mates `shouldBe` mates
 
     it "should filter neighbours among all lifes" $ do
-      let mates = createLife (Cell 0 2) : createLife (Cell 1 0) : createLife (Cell 2 1) : [] in
-        neighbours (createLife (Cell 0 0)) mates `shouldBe` createLife (Cell 1 0) : []
+      let mates = life 0 2 : life 1 0 : life 2 1 : [] in
+        neighbours (life 0 0) mates `shouldBe` life 1 0 : []
 
     it "should be alone if less then 2 living cell around" $ do
-      alone (Alive(Cell 0 0)) (Alive(Cell 1 1):Alive(Cell 1 0):[]) `shouldBe` False
-      alone (Alive(Cell 0 0)) (Alive(Cell 1 1):Dead(Cell 1 0):[]) `shouldBe` True
-      alone (Alive(Cell 0 0)) (Alive(Cell 1 1):[]) `shouldBe` True
-      alone (Alive(Cell 0 0)) (Dead(Cell 1 0):[]) `shouldBe` True
+      alone (life 0 0) (life 1 1 : life 1 0:[]) `shouldBe` False
+      alone (life 0 0) (life 1 1 : dead 1 0:[]) `shouldBe` True
+      alone (life 0 0) (life 1 1:[]) `shouldBe` True
+      alone (life 0 0) (dead 1 0:[]) `shouldBe` True
 
     it "should be overpopulated if more then 3 living cell around" $ do
-      overPop (Alive(Cell 0 0)) (Alive(Cell 1 1):Alive(Cell 1 0):Alive(Cell 0 1):Alive(Cell 2 0):[]) `shouldBe` False
-      overPop (Alive(Cell 0 0)) (Alive(Cell 1 1):Alive(Cell 1 0):Alive(Cell 0 1):Alive(Cell (-1) 0):[]) `shouldBe` True
-      overPop (Alive(Cell 0 0)) (Alive(Cell 1 1):Dead(Cell 1 0):Alive(Cell 0 1):Alive(Cell (-1) 0):[]) `shouldBe` False
-      overPop (Alive(Cell 0 0)) (Alive(Cell 1 1):Alive(Cell 1 0):Alive(Cell 0 1):Alive(Cell (-1) (-1)):[]) `shouldBe` True
+      overPop (life 0 0) (life 1 1 : life 1 0 : life 0 1 : life 2 0       :[]) `shouldBe` False
+      overPop (life 0 0) (life 1 1 : life 1 0 : life 0 1 : life (-1) 0    :[]) `shouldBe` True
+      overPop (life 0 0) (life 1 1 : dead 1 0 : life 0 1 : life (-1) 0    :[]) `shouldBe` False
+      overPop (life 0 0) (life 1 1 : life 1 0 : life 0 1 : life (-1) (-1) :[]) `shouldBe` True
 
     it "should be alone if less then 2 living cell around" $ do
-      evolve (Alive(Cell 0 0)) (Alive(Cell 1 1):Alive(Cell 1 0):[]) `shouldBe` Alive(Cell 0 0)
-      evolve (Alive(Cell 0 0)) (Alive(Cell 1 1):Dead(Cell 1 0):[]) `shouldBe` Dead(Cell 0 0)
-      evolve (Alive(Cell 0 0)) (Alive(Cell 1 1):[]) `shouldBe` Dead(Cell 0 0)
-      evolve (Alive(Cell 0 0)) (Dead(Cell 1 0):[]) `shouldBe` Dead(Cell 0 0)
+      evolve (life 0 0) (life 1 1 : life 1 0 : []) `shouldBe` life 0 0
+      evolve (life 0 0) (life 1 1 : dead 1 0 : []) `shouldBe` dead 0 0
+      evolve (life 0 0) (life 1 1 : []) `shouldBe` dead 0 0
+      evolve (life 0 0) (dead 1 0 : []) `shouldBe` dead 0 0
 
     it "should be overpopulated if more then 3 living cell around" $ do
-      evolve (Alive(Cell 0 0)) (Alive(Cell 1 1):Alive(Cell 1 0):Alive(Cell 0 1):Alive(Cell 2 0):[]) `shouldBe` Alive(Cell 0 0)
-      evolve (Alive(Cell 0 0)) (Alive(Cell 1 1):Alive(Cell 1 0):Alive(Cell 0 1):Alive(Cell (-1) 0):[]) `shouldBe` Dead(Cell 0 0)
-      evolve (Alive(Cell 0 0)) (Alive(Cell 1 1):Dead(Cell 1 0):Alive(Cell 0 1):Alive(Cell (-1) 0):[]) `shouldBe` Alive(Cell 0 0)
-      evolve (Alive(Cell 0 0)) (Alive(Cell 1 1):Alive(Cell 1 0):Alive(Cell 0 1):Alive(Cell (-1) (-1)):[]) `shouldBe` Dead(Cell 0 0)
+      evolve (life 0 0) (life 1 1 : life 1 0 : life 0 1 : life 2 0      : []) `shouldBe` life 0 0
+      evolve (life 0 0) (life 1 1 : life 1 0 : life 0 1 : life (-1) 0   : []) `shouldBe` dead 0 0
+      evolve (life 0 0) (life 1 1 : dead 1 0 : life 0 1 : life (-1) 0   : []) `shouldBe` life 0 0
+      evolve (life 0 0) (life 1 1 : life 1 0 : life 0 1 : life (-1) (-1): []) `shouldBe` dead 0 0
 
   describe "Cell methods" $ do
     it "should return true if two cell are close" $ do
