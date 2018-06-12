@@ -14,15 +14,10 @@ loadString (x:xs) r c = loadChar x r c : loadString xs r (c + 1)
 loadText :: String -> Int -> Int -> [Life]
 loadText [] _ _ = []
 loadText t r c =
-  loadString s r c ++ loadText remaining (r + 1) c
-  where s = head $ splitText t
-        remaining = replaceChar (unwords (tail (splitText t))) ' ' '\n'
+  fst $ foldl (\(res, r) x-> (res ++ loadString x r 0, r + 1) ) ([], 0) (splitLines t)
 
-splitText :: String -> [String]
-splitText x = words (replaceChar x '\n' ' ')
-
-replaceChar :: String -> Char -> Char -> String
-replaceChar [] _ _ = []
-replaceChar (x:xs) a b
-  | x == a    = b : replaceChar xs a b
-  | otherwise = x : replaceChar xs a b
+splitLines :: String -> [String]
+splitLines x = case dropWhile (== '\n') x of
+                    "" -> []
+                    x' -> l : splitLines l'
+                          where (l, l') = break (== '\n') x'

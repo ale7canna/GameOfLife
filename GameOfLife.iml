@@ -39,5 +39,7 @@
     <orderEntry type="library" name="time-1.8.0.2" level="project" />
     <orderEntry type="library" name="transformers-0.5.2.0" level="project" />
     <orderEntry type="library" name="unix-2.7.2.2" level="project" />
+    <orderEntry type="library" name="Win32-2.5.4.1" level="project" />
+    <orderEntry type="library" name="mintty-0.1.2" level="project" />
   </component>
 </module>
