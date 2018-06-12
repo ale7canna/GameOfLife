@@ -50,6 +50,13 @@ spec = do
       evolve (life 0 0) (life 1 1 : dead 1 0 : life 0 1 : life (-1) 0   : []) `shouldBe` life 0 0
       evolve (life 0 0) (life 1 1 : life 1 0 : life 0 1 : life (-1) (-1): []) `shouldBe` dead 0 0
 
+    it "should get rows number" $ do
+      getRows (life 1 1 : life 1 0 : life 0 1 : life 2 0 : []) `shouldBe` [0, 1, 2]
+      getRows (dead (-1) 1 : life 1 0 : life 3 1 : life 2 0 : []) `shouldBe` [-1, 1, 2, 3]
+
+    it "should split world" $ do
+      splitRows (life 1 1 : life 1 0 : life 0 1 : life 2 0 : []) `shouldBe` [[life 0 1], (life 1 0 : life 1 1 : []), [life 2 0]]
+
   describe "Cell methods" $ do
     it "should return true if two cell are close" $ do
       (Cell 0 0) `isNear` (Cell (-1) 0) `shouldBe` True
@@ -64,3 +71,8 @@ spec = do
       (Cell 0 0) `isNear` (Cell (2) (-1)) `shouldBe` False
       (Cell 0 0) `isNear` (Cell 2 0) `shouldBe` False
 
+    it "should return Cell coordinates" $ do
+      getCoord (Cell 0 0) `shouldBe` (0, 0)
+      getCoord (Cell 0 1) `shouldBe` (0, 1)
+      getCoord (Cell 1 0) `shouldBe` (1, 0)
+      getCoord (Cell (-1) (-1)) `shouldBe` ((-1), (-1))

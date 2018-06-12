@@ -1,5 +1,6 @@
 module Input where
 
+import System.IO
 import Life
 
 loadChar :: Char -> Int -> Int -> Life
@@ -21,3 +22,8 @@ splitLines x = case dropWhile (== '\n') x of
                     "" -> []
                     x' -> l : splitLines l'
                           where (l, l') = break (== '\n') x'
+
+loadFile :: FilePath -> IO String
+loadFile fp = do
+  content <- readFile fp
+  return content

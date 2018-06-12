@@ -1,7 +1,9 @@
 module Life where
 
+import Data.List
+
 data Cell = Cell Int Int
-  deriving (Show, Eq)
+  deriving (Show, Eq, Ord)
 
 class CellCapable a where
   cell :: a -> Cell
@@ -10,11 +12,44 @@ class LifeCycle a where
   evolve :: a -> [a] -> a
 
 data Life = Alive Cell | Dead Cell
-  deriving (Show, Eq)
+  deriving (Eq, Ord)
 
 instance CellCapable Life where
   cell (Alive c) = c
   cell (Dead c)  = c
+
+instance Show Life where
+  show x@(Alive _) = "1"
+  show x@(Dead _)  = "0"
+
+show' :: [Life] -> String
+show' x = foldr (\r res -> showRow r ++ "\n" ++ res) "" (splitRows x)
+
+showRow :: [Life] -> String
+showRow r = foldr (\e l -> show e ++ l) "" rows
+  where rows = sortLifeByColumn r
+
+sortLifeByColumn :: [Life] -> [Life]
+sortLifeByColumn r = sortOn (\item -> snd $ getCoord $ cell item) r
+
+splitRows :: [Life] -> [[Life]]
+splitRows x = map (\row -> sort (splitArray (\l -> row == (fst $ getCoord $ cell l)) (x))) (getRows x)
+
+getRows :: [Life] -> [Int]
+getRows x = sort $ remDup rows
+  where rows = [fst $ getCoord $ cell r | r <- x]
+
+remDup :: Eq a => [a] -> [a]
+remDup [] = []
+remDup (x:xs)
+  | x `elem` xs = remDup xs
+  | otherwise   = x : remDup xs
+
+getCoord :: Cell -> (Int, Int)
+getCoord (Cell r c) = (r, c)
+
+splitArray :: (Life -> Bool) -> [Life] -> [Life]
+splitArray f x = filter f x
 
 instance LifeCycle Life where
   evolve x@(Alive c) world

@@ -3,6 +3,7 @@ module InputSpec where
 import Input
 import Life
 import Test.Hspec
+import System.IO
 
 main :: IO ()
 main = hspec spec
@@ -35,3 +36,23 @@ spec = do
                                                        life 1 0 : life 1 1 : dead 1 2 : life 1 3 :
                                                        life 2 0 : dead 2 1 : life 2 2 : dead 2 3 :
                                                        life 3 0 : life 3 1 : dead 3 2 : dead 3 3 : []
+
+    it "should load world from file" $ do
+      writeFile "temp.txt" "0100\n1101\n1010\n1100"
+      content <- loadFile "temp.txt"
+      loadText content 0 0 `shouldBe` dead 0 0 : life 0 1 : dead 0 2 : dead 0 3 :
+                                      life 1 0 : life 1 1 : dead 1 2 : life 1 3 :
+                                      life 2 0 : dead 2 1 : life 2 2 : dead 2 3 :
+                                      life 3 0 : life 3 1 : dead 3 2 : dead 3 3 : []
+
+    it "should print humanly the world" $ do
+      show' world'    `shouldBe` "01\n11\n"
+
+      show' world''   `shouldBe` "0100\n1101\n1010\n1100\n"
+
+        where world'    = dead 0 0 : life 0 1 :
+                          life 1 0 : life 1 1 : []
+              world''   = dead 0 0 : life 0 1 : dead 0 2 : dead 0 3 :
+                          life 1 0 : life 1 1 : dead 1 2 : life 1 3 :
+                          life 2 0 : dead 2 1 : life 2 2 : dead 2 3 :
+                          life 3 0 : life 3 1 : dead 3 2 : dead 3 3 : []
