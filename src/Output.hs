@@ -7,6 +7,9 @@ import Cell
 show' :: [Life] -> String
 show' x = foldr (\r res -> showRow r ++ "\n" ++ res) "" (splitRows x)
 
+show'' :: [[Life]] -> String
+show'' x = foldr (\r res -> show' r ++ "\n" ++ res) "" x
+
 showRow :: [Life] -> String
 showRow r = foldr (\e l -> show e ++ l) "" rows
   where rows = sortOn (\e -> getColumn e) r
