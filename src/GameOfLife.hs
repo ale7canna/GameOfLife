@@ -2,11 +2,16 @@ module GameOfLife
     ( start
     ) where
 
-import Life
 import Input
+import World
+import Output
 
 start :: IO ()
 start = do
   input <- loadFile "world.gol"
-  putStrLn (show' $ loadText input 0 0)
+  let world = loadText input 0 0
+  putStrLn (show' $ world)
+  putStrLn "\n"
+  putStrLn $ show' (evolveWorld world)
+
 

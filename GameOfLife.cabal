@@ -26,6 +26,9 @@ library
       GameOfLife
       Life
       Input
+      Cell
+      World
+      Output
   other-modules:
       Paths_GameOfLife
   hs-source-dirs:

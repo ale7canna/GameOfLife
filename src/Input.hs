@@ -2,6 +2,7 @@ module Input where
 
 import System.IO
 import Life
+import Cell
 
 loadChar :: Char -> Int -> Int -> Life
 loadChar '1' r c = Alive (Cell r c)
